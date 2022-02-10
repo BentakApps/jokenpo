@@ -26,33 +26,39 @@ let i = 0,
 const nn = new MLP( 3, 3, 3, 0.1, 300 );
 
 let computerScore, playerScore;
+let computerPlay, playerPlay;
 let computerDiv, playerDiv;
+let menu, result, finalScore;
+
+let gameOver = false;
 
 const play = function(player){
-	clearBoard();
-	const move = Array(3).fill(0);
-	move[player] = 1;
-	tmpMove.push( move );
-	if( tmpMove.length == 2 ){
-		x.push( tmpMove.shift() );
-		y.push( tmpMove[0] );
-	}
-	let computer;
-	if( y.length < 3 ){
-		computer = Math.floor( Math.random() * 3 );
-	}else{
-		let prediction = nn.predict( lastMove ).data;
-		computer = (prediction.indexOf(Math.max(...prediction)) + 1) % 3;
-		if( lastWinner !== 'computer' ){ 
-			nn.shuffle( x, y );
-			nn.fit( x, y );
+	if(!gameOver){
+		clearBoard();
+		const move = Array(3).fill(0);
+		move[player] = 1;
+		tmpMove.push( move );
+		if( tmpMove.length == 2 ){
+			x.push( tmpMove.shift() );
+			y.push( tmpMove[0] );
 		}
+		let computer;
+		if( y.length < 3 ){
+			computer = Math.floor( Math.random() * 3 );
+		}else{
+			let prediction = nn.predict( lastMove ).data;
+			computer = (prediction.indexOf(Math.max(...prediction)) + 1) % 3;
+			if( lastWinner !== 'computer' ){ 
+				nn.shuffle( x, y );
+				nn.fit( x, y );
+			}
+		}
+		const win = plays[player+computer];
+		lastWinner = player === computer || win === undefined ? 'tie' : win === player ? 'player' : 'computer';
+		score[lastWinner]++;
+		updateScore(player, computer, lastWinner);
+		lastMove = move;
 	}
-	const win = plays[player+computer];
-	lastWinner = player === computer || win === undefined ? 'tie' : win === player ? 'player' : 'computer';
-	score[lastWinner]++;
-	updateScore(player, computer, lastWinner);
-	lastMove = move;
 }
 
 const updateScore = function(p, c, w){
@@ -78,6 +84,19 @@ const updateScore = function(p, c, w){
 	playerScore.setAttribute("aria-valuenow", score.player);
 	playerScore.innerHTML = score.player;
 	
+	if(score.computer == 50){
+		gameOver = true;
+		menu.classList.toggle("hidden");
+		result.innerHTML = "O Computador venceu!";
+		finalScore.innerHTML = score.computer + " x " + score.player;
+	}
+	if(score.player == 50){
+		gameOver = true;
+		menu.classList.toggle("hidden");
+		result.innerHTML = "Voce venceu!";
+		finalScore.innerHTML = score.player + " x " + score.computer;
+	}
+
 	return;
 	for(let player of Object.keys(score) ){
 		scoreResults[player].innerHTML = player+"<br>"+score[player];
@@ -92,6 +111,18 @@ const clearBoard = function(){
 	computerDiv.classList.remove("tie");
 }
 
+const restart = function(){
+	gameOver = false;
+	menu.classList.toggle("hidden");
+	score.player = 0;
+	score.computer = 0;
+	computerScore.style.width = score.computer * 2 + "%";
+	computerScore.setAttribute("aria-valuenow", score.computer);
+	computerScore.innerHTML = score.computer;
+	playerScore.style.width = score.player * 2 + "%";
+	playerScore.setAttribute("aria-valuenow", score.player);
+	playerScore.innerHTML = score.player;
+}
 const init = function(){
 	computerScore = document.querySelector("#computerscore");
 	playerScore = document.querySelector("#playerscore");
@@ -99,8 +130,9 @@ const init = function(){
 	playerDiv = document.querySelector("#playerdiv");
 	computerPlay = document.querySelector("#computerplay");
 	playerPlay = document.querySelector("#playerplay");
-	console.log(computerScore);
-	console.log(playerScore);
+	menu = document.querySelector("#menu");
+	result = document.querySelector("#result");
+	finalScore = document.querySelector("#finalscore");
 	return;
 	const top = document.createElement('div');
 	top.className = "row";
