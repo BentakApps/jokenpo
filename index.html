@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="theme-color" content="#FFF"/>
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<meta name="mobile-web-app-capable" content="yes">
 	<meta property="og:url" content=" " />
 	<meta property="og:type" content=" " />
@@ -14,15 +14,82 @@
 	<meta property="og:image:width" content="512" />
 	<meta property="og:image:height" content="512" />
 	<meta name="Description" content="Can a neural network predict your next move on a game of rock, paper and scissor?">
-	<title> joKePo </title>
+	<title> Pedra Papel Tesoura </title>
 	<link rel="manifest" href="manifest.json" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 	<link rel="stylesheet" href="css/main.css" />
 	<link rel="icon" href="favicon.png" sizes="256x256"/>
 	<link rel="apple-touch-icon" href="favicon.png" />
 </head>
 <body>
-	<div class="tip hidden"></div>
-	<script src="js/aux.js"></script>
+	<div class="game">
+		<div class="computer">
+			<div class="row">
+				<h1>
+					PEDRA PAPEL TESOURA
+				</h1>
+			</div>
+			<div class="row">
+				<div class="progress">
+					<div class="progress-bar progress-bar-striped bg-danger"
+					id="computerscore"
+					role="progressbar" 
+					style="width: 0%;" 
+					aria-valuenow="0" 
+					aria-valuemin="0" 
+					aria-valuemax="50">
+						0
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="board">
+			<div class="row" id="computerdiv">
+				<p id="computerplay"></p>
+			</div>
+			<div class="row" id="playerdiv">
+				<p id="playerplay"></p>
+			</div>
+		</div>
+		<div class="player">
+			<div class="row">
+				<div class="progress">
+					<div class="progress-bar progress-bar-striped bg-success"
+					id="playerscore"
+					role="progressbar" 
+					style="width: 0%;" 
+					aria-valuenow="0" 
+					aria-valuemin="0" 
+					aria-valuemax="50">
+						0
+					</div>
+				</div>
+			</div>
+			<div class="btn-group btn-group-lg" role="group" aria-label="Jogue">
+				<button type="button" class="btn btn-outline-primary" onclick="play(0)">
+					<p class="playerbutton">&#9994;</p>
+				</button>
+				<button type="button" class="btn btn-outline-primary" onclick="play(1)">
+					<p class="playerbutton">&#9995;</p>
+				</button>
+				<button type="button" class="btn btn-outline-primary" onclick="play(2)">
+					<p class="playerbutton">&#9996;</p>
+				</button>
+			</div>
+		</div>
+	</div>
+	<div id="menu" class="hidden">
+		<h1 id="result">
+		   Você venceu!
+		</h1>
+		<h1 id="finalscore">
+			 50 x 35
+		</h1>
+		<button type="button" class="btn btn-outline-primary btn-lg" onclick="restart()">
+			De novo!
+		</button>
+	</div>
+	<!--<script src="js/aux.js"></script>-->
 	<script src="js/Matrix2.js"></script>
 	<script src="js/MLP.js"></script>
 	<script src="js/main.js"></script>
