@@ -162,8 +162,11 @@ body {
 .playerbutton {
 	font-size:7rem;
 }
-.winner {
+.winnerp {
 	background-color: rgb(0,255,0);
+}
+.winnerc {
+	background-color: rgb(255,0,0);
 }
 .tie {
 	background-color: grey;

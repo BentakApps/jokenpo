@@ -66,14 +66,17 @@ const updateScore = function(p, c, w){
 	computerPlay.innerHTML = "&#" + (9994 + c) +";";
 	switch (w) {
 		case 'player':
-			playerDiv.classList.add("winner");
+			playerDiv.classList.add("winnerp");
+			playTone('F3','sine', .8);
 			break;
 		case 'computer':
-			computerDiv.classList.add("winner");
+			computerDiv.classList.add("winnerc");
+			playTone('A2','sine', .8);
 			break;
 		case 'tie':
 			playerDiv.classList.add("tie");
 			computerDiv.classList.add("tie");
+			playTone('C3','sine', .8);
 			break;
 	}
 	//setTimeout(()=>clearBoard(),1000);
@@ -105,9 +108,9 @@ const updateScore = function(p, c, w){
 }
 
 const clearBoard = function(){
-	playerDiv.classList.remove("winner");
+	playerDiv.classList.remove("winnerp");
 	playerDiv.classList.remove("tie");
-	computerDiv.classList.remove("winner");
+	computerDiv.classList.remove("winnerc");
 	computerDiv.classList.remove("tie");
 }
 
@@ -133,51 +136,7 @@ const init = function(){
 	menu = document.querySelector("#menu");
 	result = document.querySelector("#result");
 	finalScore = document.querySelector("#finalscore");
-	return;
-	const top = document.createElement('div');
-	top.className = "row";
-	scoreResults = {};
-	for(let k of Object.keys( score )){
-		let d = document.createElement('div');
-		d.innerHTML = k+"<br>&nbsp;";
-		scoreResults[k] = d;
-		top.appendChild( d ); 
-	}
-	middle = document.createElement('div');
-	middle.className = "row";
-	const bottom = document.createElement('div');
-	bottom.className = "row";
-	buttons = [];
-	for(let i = 0; i < names.length; i++){
-		const btn = document.createElement('button');
-		btn.classList.add(names[i].toLowerCase())
-		btn.title = names[i];
-		btn.addEventListener('click', ()=>play(i) );
-		bottom.appendChild( btn );
-		buttons.push(btn);
-	}
-	document.body.appendChild( top );
-	document.body.appendChild( middle );
-	document.body.appendChild( bottom );
-
-	const keys = ['j', 'k', 'l'];
-	document.addEventListener('keydown', e => {
-		const i = keys.indexOf(e.key);
-		if(i > -1) {
-			buttons[i].focus();
-			play(i);
-		}
-		if(e.key === 'Escape'){
-			tip.classList.add('hidden');
-		}
-	})
-	const tip = document.querySelector('.tip');
-	tip.innerHTML = 'You can play using the keyboard:<br>' + keys.map(
-		(key, i) => key + '→' + names[i]
-	).join(', ');
-	tip.addEventListener('click', ()=>{
-		tip.classList.toggle('hidden');
-	})
+	
 }
 
 init();
