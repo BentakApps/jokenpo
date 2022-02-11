@@ -67,16 +67,16 @@ const updateScore = function(p, c, w){
 	switch (w) {
 		case 'player':
 			playerDiv.classList.add("winnerp");
-			playTone('F3','sine', .8);
+			playTone('G3','sine', .8);
 			break;
 		case 'computer':
 			computerDiv.classList.add("winnerc");
-			playTone('A2','sine', .8);
+			playTone('D3','sine', .8);
 			break;
 		case 'tie':
 			playerDiv.classList.add("tie");
 			computerDiv.classList.add("tie");
-			playTone('C3','sine', .8);
+			playTone('E3','sine', .8);
 			break;
 	}
 	//setTimeout(()=>clearBoard(),1000);
